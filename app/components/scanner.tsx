@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useCallback, useEffect } from "react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -16,7 +17,72 @@ interface ScanResult {
   confidencePercent: number;
 }
 
-// Swap this single function for a real API call when ready
+/*
+ * ─── REAL API INTEGRATION (OpenAI GPT-4o Vision) ────────────────────────────
+ *
+ * Replace this mock with a call to your own backend route (e.g. POST /api/scan).
+ * Never call OpenAI directly from the browser — the API key would be exposed.
+ *
+ * ── 1. FRONTEND → YOUR BACKEND ───────────────────────────────────────────────
+ *
+ *   const formData = new FormData();
+ *   formData.append("image", file);
+ *
+ *   const res = await fetch("/api/scan", { method: "POST", body: formData });
+ *   return res.json();
+ *
+ * ── 2. YOUR BACKEND → OPENAI (POST https://api.openai.com/v1/chat/completions)
+ *
+ *   Headers:
+ *     Authorization: Bearer YOUR_OPENAI_API_KEY
+ *     Content-Type:  application/json
+ *
+ *   Body:
+ *   {
+ *     "model": "gpt-4o",
+ *     "max_tokens": 300,
+ *     "messages": [
+ *       {
+ *         "role": "system",
+ *         "content": "You are a vintage item valuation expert. Analyze the image and return ONLY valid JSON — no markdown, no explanation."
+ *       },
+ *       {
+ *         "role": "user",
+ *         "content": [
+ *           {
+ *             "type": "image_url",
+ *             "image_url": {
+ *               "url": "data:image/jpeg;base64,<BASE64_STRING>"
+ *             }
+ *           },
+ *           {
+ *             "type": "text",
+ *             "text": "Identify this vintage item and estimate its current resale value based on real market data. Return this exact JSON structure: { \"product\": string, \"category\": string, \"minValue\": number, \"maxValue\": number, \"confidence\": \"Low\" | \"Medium\" | \"High\", \"confidencePercent\": number }"
+ *           }
+ *         ]
+ *       }
+ *     ]
+ *   }
+ *
+ * ── 3. OPENAI RESPONSE → PARSE ────────────────────────────────────────────────
+ *
+ *   const content = response.choices[0].message.content;
+ *   const result = JSON.parse(content);
+ *   // result shape matches ScanResult interface below
+ *
+ * ── 4. EXPECTED JSON RESPONSE FROM GPT-4o ────────────────────────────────────
+ *
+ *   {
+ *     "product": "Leather jacket",
+ *     "category": "Vintage",
+ *     "minValue": 100,
+ *     "maxValue": 250,
+ *     "confidence": "High",
+ *     "confidencePercent": 78
+ *   }
+ *
+ * ─────────────────────────────────────────────────────────────────────────────
+ */
 async function analyzeImage(_file: File): Promise<ScanResult> {
   await new Promise((res) => setTimeout(res, 2500));
   return {
@@ -125,6 +191,9 @@ export default function Scanner() {
       const analysis = await analyzeImage(file);
       setResult(analysis);
       setState("result");
+      toast.success("Scan complete!", {
+        description: `${analysis.product} · €${analysis.minValue}–€${analysis.maxValue}`,
+      });
     } catch {
       setState("error");
     }

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import { Toaster } from "@/components/ui/sonner";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -27,7 +28,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={cn("h-full", playfair.variable, inter.variable)}>
-      <body className="min-h-full flex flex-col bg-[#F5F0EA]">{children}</body>
+      <body className="min-h-full flex flex-col bg-[#F5F0EA]">
+        {children}
+        <Toaster position="bottom-center" />
+      </body>
     </html>
   );
 }
