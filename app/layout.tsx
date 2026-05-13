@@ -33,6 +33,26 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  name: "VintexScan",
+  url: "https://www.vintexscan.com",
+  description: "Upload a photo and get an instant value estimate for your vintage item.",
+  applicationCategory: "UtilitiesApplication",
+  operatingSystem: "Web",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "EUR",
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "VintexScan",
+    url: "https://www.vintexscan.com",
+  },
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -40,6 +60,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={cn("h-full", playfair.variable, inter.variable)}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body className="min-h-full flex flex-col bg-[#F5F0EA]">
         {children}
         <Toaster position="bottom-center" />
