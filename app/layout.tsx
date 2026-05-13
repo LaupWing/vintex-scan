@@ -17,8 +17,20 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.vintexscan.com"),
   title: "VintexScan — Value Your Vintage",
   description: "Upload a photo and get an instant value estimate for your vintage item.",
+  robots: {
+    index: true,
+    follow: true,
+  },
+  openGraph: {
+    title: "VintexScan — Value Your Vintage",
+    description: "Upload a photo and get an instant value estimate for your vintage item.",
+    url: "https://www.vintexscan.com",
+    siteName: "VintexScan",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
