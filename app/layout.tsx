@@ -61,6 +61,13 @@ export default function RootLayout({
   return (
     <html lang="en" className={cn("h-full", playfair.variable, inter.variable)}>
       <head>
+        <meta name="google-site-verification" content="juxl8FrwSJxRhK4mAHC613b2ntJL6LoBwtsD6WJuBLA" />
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-SXDYZCP1LT" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-SXDYZCP1LT');`,
+          }}
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
